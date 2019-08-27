@@ -28,6 +28,22 @@ app.get("/api/wut", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/timestamp/:date_string?", function (req, res) {
+
+	var date = 0;
+	if(req.params.date_string == undefined){
+		date = new Date()
+	}
+	else if(isNaN(req.params.date_string)){
+		date = new Date( Date.parse(req.params.date_string));
+	}
+	else if (!isNaN(req.params.date_string)){
+		date = new Date(Number(req.params.date_string))
+	}
+ 
+  res.send({"unix": date.getTime(), "utc" : date.toUTCString() })
+});
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
